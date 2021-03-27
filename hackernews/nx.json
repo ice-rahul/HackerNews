@@ -1,0 +1,38 @@
+{
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    ".eslintrc.json": "*",
+    "nx.json": "*"
+  },
+  "affected": { "defaultBase": "master" },
+  "npmScope": "hackernews",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e",
+          "build-storybook"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "hackernews-web": { "tags": [] },
+    "hackernews-web-e2e": {
+      "tags": [],
+      "implicitDependencies": ["hackernews-web"]
+    },
+    "hackernews-ui": { "tags": [] },
+    "hackernews-ui-e2e": {
+      "tags": [],
+      "implicitDependencies": ["hackernews-ui"]
+    }
+  }
+}
