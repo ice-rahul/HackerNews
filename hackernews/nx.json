@@ -33,6 +33,7 @@
     "hackernews-ui-e2e": {
       "tags": [],
       "implicitDependencies": ["hackernews-ui"]
-    }
+    },
+    "hackernews-backend": { "tags": [] }
   }
 }

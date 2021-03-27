@@ -1,10 +1,21 @@
 {
   "version": 2,
-  "cli": { "defaultCollection": "@nrwl/next" },
+  "cli": {
+    "defaultCollection": "@nrwl/next"
+  },
   "defaultProject": "hackernews-web",
   "generators": {
-    "@nrwl/react": { "application": { "babel": true } },
-    "@nrwl/next": { "application": { "style": "scss", "linter": "eslint" } }
+    "@nrwl/react": {
+      "application": {
+        "babel": true
+      }
+    },
+    "@nrwl/next": {
+      "application": {
+        "style": "scss",
+        "linter": "eslint"
+      }
+    }
   },
   "projects": {
     "hackernews-web": {
@@ -14,16 +25,23 @@
       "targets": {
         "build": {
           "executor": "@nrwl/next:build",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "root": "apps/hackernews-web",
             "outputPath": "dist/apps/hackernews-web"
           },
-          "configurations": { "production": {} }
+          "configurations": {
+            "production": {}
+          }
         },
         "serve": {
           "executor": "@nrwl/next:server",
-          "options": { "buildTarget": "hackernews-web:build", "dev": true },
+          "options": {
+            "buildTarget": "hackernews-web:build",
+            "dev": true
+          },
           "configurations": {
             "production": {
               "buildTarget": "hackernews-web:build:production",
@@ -33,11 +51,15 @@
         },
         "export": {
           "executor": "@nrwl/next:export",
-          "options": { "buildTarget": "hackernews-web:build:production" }
+          "options": {
+            "buildTarget": "hackernews-web:build:production"
+          }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/hackernews-web"],
+          "outputs": [
+            "coverage/apps/hackernews-web"
+          ],
           "options": {
             "jestConfig": "apps/hackernews-web/jest.config.js",
             "passWithNoTests": true
@@ -46,7 +68,9 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/hackernews-web/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "apps/hackernews-web/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         }
       }
@@ -71,7 +95,11 @@
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "options": { "lintFilePatterns": ["apps/hackernews-web-e2e/**/*.js"] }
+          "options": {
+            "lintFilePatterns": [
+              "apps/hackernews-web-e2e/**/*.js"
+            ]
+          }
         }
       }
     },
@@ -83,12 +111,16 @@
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/hackernews-ui/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "libs/hackernews-ui/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/hackernews-ui"],
+          "outputs": [
+            "coverage/libs/hackernews-ui"
+          ],
           "options": {
             "jestConfig": "libs/hackernews-ui/jest.config.js",
             "passWithNoTests": true
@@ -99,19 +131,33 @@
           "options": {
             "uiFramework": "@storybook/react",
             "port": 4400,
-            "config": { "configFolder": "libs/hackernews-ui/.storybook" }
+            "config": {
+              "configFolder": "libs/hackernews-ui/.storybook"
+            }
           },
-          "configurations": { "ci": { "quiet": true } }
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
         },
         "build-storybook": {
           "executor": "@nrwl/storybook:build",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "uiFramework": "@storybook/react",
             "outputPath": "dist/storybook/hackernews-ui",
-            "config": { "configFolder": "libs/hackernews-ui/.storybook" }
+            "config": {
+              "configFolder": "libs/hackernews-ui/.storybook"
+            }
           },
-          "configurations": { "ci": { "quiet": true } }
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
         }
       }
     },
@@ -128,13 +174,76 @@
             "devServerTarget": "hackernews-ui:storybook"
           },
           "configurations": {
-            "ci": { "devServerTarget": "hackernews-ui:storybook:ci" }
+            "ci": {
+              "devServerTarget": "hackernews-ui:storybook:ci"
+            }
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/hackernews-ui-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/hackernews-ui-e2e/**/*.{js,ts}"
+            ]
+          }
+        }
+      }
+    },
+    "hackernews-backend": {
+      "root": "apps/hackernews-backend",
+      "sourceRoot": "apps/hackernews-backend/src",
+      "projectType": "application",
+      "prefix": "hackernews-backend",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/apps/hackernews-backend",
+            "main": "apps/hackernews-backend/src/main.js",
+            "tsConfig": "apps/hackernews-backend/tsconfig.app.json",
+            "assets": [
+              "apps/hackernews-backend/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/hackernews-backend/src/environments/environment.js",
+                  "with": "apps/hackernews-backend/src/environments/environment.prod.js"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "hackernews-backend:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/hackernews-backend/**/*.js"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/hackernews-backend"
+          ],
+          "options": {
+            "jestConfig": "apps/hackernews-backend/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }
