@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model comments {
+  comment_id        Int        @id @default(autoincrement())
+  comment           String     @db.Text
+  post_id           Int
+  parent_comment_id Int
+  user_id           Int
+  status            Int        @default(6)
+  created_at        DateTime   @default(now()) @db.DateTime(0)
+  updated_at        DateTime   @default(now()) @db.DateTime(0)
+  comments          comments   @relation("commentsTocomments_parent_comment_id", fields: [parent_comment_id], references: [comment_id])
+  posts             posts      @relation(fields: [post_id], references: [post_id])
+  constants         constants  @relation(fields: [status], references: [constant_id])
+  users             users      @relation(fields: [user_id], references: [user_id])
+  other_comments    comments[] @relation("commentsTocomments_parent_comment_id")
+
+  @@index([parent_comment_id], name: "FK_COMMENT")
+  @@index([status], name: "FK_COMMENT_STATUS")
+  @@index([post_id], name: "FK_POST")
+  @@index([user_id], name: "FK_USER")
+}
+
+model constants {
+  constant_id                      Int        @id @default(autoincrement())
+  category                         String     @db.VarChar(255)
+  title                            String     @db.VarChar(255)
+  status                           Int        @default(1)
+  created_at                       DateTime   @default(now()) @db.DateTime(0)
+  updated_at                       DateTime   @default(now()) @db.DateTime(0)
+  comments                         comments[]
+  posts_constantsToposts_post_type posts[]    @relation("constantsToposts_post_type")
+  posts_constantsToposts_status    posts[]    @relation("constantsToposts_status")
+}
+
+model posts {
+  post_id                              Int        @id @default(autoincrement())
+  title                                String     @db.Text
+  description                          String     @db.Text
+  post_type                            Int        @default(1)
+  points                               Int        @default(0)
+  posted_by                            Int
+  status                               Int        @default(6)
+  created_at                           DateTime   @db.DateTime(0)
+  updated_at                           DateTime   @default(dbgenerated("'0000-00-00 00:00:00'")) @db.DateTime(0)
+  constants_constantsToposts_post_type constants  @relation("constantsToposts_post_type", fields: [post_type], references: [constant_id])
+  users                                users      @relation(fields: [posted_by], references: [user_id])
+  constants_constantsToposts_status    constants  @relation("constantsToposts_status", fields: [status], references: [constant_id])
+  comments                             comments[]
+
+  @@index([posted_by], name: "FK_POST_BY")
+  @@index([post_type], name: "FK_POST_TYPE")
+  @@index([status], name: "FK_STATUS")
+}
+
+model users {
+  user_id       Int        @id @default(autoincrement())
+  name          String     @db.VarChar(255)
+  email         String     @db.VarChar(255)
+  mobile        String     @db.VarChar(15)
+  password      String     @db.VarChar(255)
+  username      String     @db.VarChar(255)
+  fcm_token     String     @db.VarChar(50)
+  registered_by String     @default("8") @db.VarChar(255)
+  status        Int        @default(6)
+  user_type     Int        @default(5)
+  created_at    DateTime   @default(now()) @db.DateTime(0)
+  updated_at    DateTime   @default(now()) @db.DateTime(0)
+  comments      comments[]
+  posts         posts[]
+}
